@@ -1,0 +1,32 @@
+{
+  "name": "docx-generator-skill",
+  "version": "1.0.0",
+  "description": "Markdown 转 DOCX Skill for Claude Code - 支持架构图生成和插入",
+  "main": "scripts/create-report-docx.js",
+  "scripts": {
+    "generate-docx": "node scripts/create-report-docx.js",
+    "generate-arch": "python scripts/generate_arch.py",
+    "build": "npm run generate-arch && node scripts/create-report-docx.js",
+    "test": "echo '测试: 请运行 npm run generate-docx -- example.md test.docx'"
+  },
+  "keywords": [
+    "claude-code",
+    "skill",
+    "docx",
+    "markdown",
+    "architecture-diagram",
+    "文档生成"
+  ],
+  "author": "Claude Code User",
+  "license": "MIT",
+  "dependencies": {
+    "docx": "^8.5.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/docx-generator-skill.git"
+  }
+}
