@@ -1,0 +1,22 @@
+{
+  "name": "wechat-article-workflow",
+  "version": "1.0.0",
+  "description": "微信公众号文章创作全流程 Skill",
+  "main": "scripts/generate.ts",
+  "scripts": {
+    "generate": "bun run scripts/generate.ts",
+    "learn-style": "bun run scripts/learn-style.ts",
+    "create-cover": "bun run scripts/create-cover.ts",
+    "validate": "bun run scripts/validate-article.ts",
+    "publish": "bun run scripts/publish-draft.ts"
+  },
+  "keywords": [
+    "claude-code",
+    "skill",
+    "wechat",
+    "公众号",
+    "文章创作"
+  ],
+  "license": "MIT",
+  "dependencies": {}
+}
