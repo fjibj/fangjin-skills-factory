@@ -3,9 +3,12 @@
  * 上传草稿箱脚本
  * 将文章上传到微信公众号草稿箱
  * 使用方式: bun run scripts/publish-draft.ts --article output.html --cover cover.png
+ *
+ * 本脚本调用 wechat-article-export skill 进行上传
  */
 
 import { parseArgs } from "util";
+import { execSync } from "child_process";
 
 const { values } = parseArgs({
   args: Bun.argv,
@@ -27,17 +30,26 @@ if (!articlePath) {
 }
 
 console.log(`📤 正在上传到公众号草稿箱`);
-console.log("");
-console.log("📋 上传内容:");
 console.log(`  文章: ${articlePath}`);
 console.log(`  封面: ${coverPath || "未提供"}`);
 console.log("");
-console.log("🔧 处理流程:");
-console.log("  1. 读取配置文件 (wechat-article.config.json)");
-console.log("  2. 获取/刷新 Access Token");
-console.log("  3. 上传封面图片到微信服务器");
-console.log("  4. 上传图文消息素材");
-console.log("  5. 保存到草稿箱");
-console.log("");
-console.log("⚠️  提示: 完整功能需要配置公众号 AppID 和 AppSecret");
-console.log("📖 参考: 请先创建 wechat-article.config.json 配置文件");
+
+try {
+  // 调用 wechat-article-export skill
+  console.log("🚀 调用 wechat-article-export skill...");
+  console.log("");
+
+  const coverArg = coverPath ? ` --cover ${coverPath}` : "";
+  const result = execSync(`claude skill run wechat-article-export --article ${articlePath}${coverArg}`, {
+    encoding: "utf-8",
+    stdio: "inherit"
+  });
+
+  console.log("");
+  console.log("✅ 上传完成！");
+} catch (error) {
+  console.error("❌ 上传失败");
+  console.error("请确保已安装 wechat-article-export skill:");
+  console.error("  claude skill install wechat-article-export");
+  process.exit(1);
+}

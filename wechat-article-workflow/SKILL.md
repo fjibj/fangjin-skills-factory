@@ -2,21 +2,19 @@
 
 微信公众号文章创作全流程 Skill，从主题到草稿箱的完整工作流。
 
-⚠️ **重要提示：当前 scripts 目录下的文件是占位符/框架代码，完整功能尚未实现。**
-- 目前的 `.ts` 脚本只包含工作流程说明和 CLI 接口
-- 实际的 Agent 智能体实现（时事研究员、深度思考者等）需要进一步开发
-- 如需完整功能，建议参考原独立 Skill（wechat-article-maydayv、wechat-article-generate 等）
-
 ---
 
 ## 依赖说明
 
-**wechat-article-workflow 是独立完整的 Skill，不需要额外安装其他 Skill。**
+**本 Skill 需要配合以下独立 Skill 使用：**
 
-这个 Skill 已经整合了以下功能，无需再安装旧版本的独立 Skill：
-- ❌ wechat-article-maydayv（已整合）
-- ❌ wechat-article-export（已整合）
-- ❌ wechat-article-generate（已整合）
+| Skill | 用途 | 安装命令 |
+|-------|------|----------|
+| `wechat-article-generate` | 文章生成 | `claude skill install wechat-article-generate` |
+| `wechat-article-maydayv` | 风格学习/改写 | `claude skill install wechat-article-maydayv` |
+| `wechat-article-export` | 文章导出/上传 | `claude skill install wechat-article-export` |
+
+⚠️ **使用前请先安装上述依赖 Skill**，本 Skill 的 scripts 会调用它们的功能。
 
 ---
 

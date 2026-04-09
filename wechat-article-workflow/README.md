@@ -2,28 +2,21 @@
 
 微信公众号文章创作 Skill for Claude Code
 
-⚠️ **重要提示：当前 scripts 目录下的文件是占位符/框架代码，完整功能尚未实现。**
-- 目前的 `.ts` 脚本只包含工作流程说明和 CLI 接口
-- 实际的 Agent 智能体实现需要进一步开发
-- 如需完整功能，建议参考或使用原独立 Skill
+一个**工作流程编排 Skill**，整合调用多个独立 Skill 完成文章创作全流程。
 
 ---
 
 ## 依赖说明
 
-**本 Skill 是独立完整的，不需要额外安装其他 Skill。**
+**本 Skill 需要配合以下独立 Skill 使用：**
 
-wechat-article-workflow 已经整合了以下旧版本 Skill 的功能：
-- ✅ **文章生成** - 原 wechat-article-generate（已整合）
-- ✅ **文章导出** - 原 wechat-article-export（已整合）
-- ✅ **MaydayV 风格** - 原 wechat-article-maydayv（已整合到风格学习）
+| Skill | 用途 | 安装命令 |
+|-------|------|----------|
+| `wechat-article-generate` | 文章生成（原 generate.ts） | `claude skill install wechat-article-generate` |
+| `wechat-article-maydayv` | MaydayV 风格改写 | `claude skill install wechat-article-maydayv` |
+| `wechat-article-export` | 文章导出/上传 | `claude skill install wechat-article-export` |
 
-**系统要求：**
-- Node.js 20+
-- bun
-- Python 3.8+
-- PIL (Pillow)
-- requests
+⚠️ **使用前请先安装上述依赖 Skill**。
 
 ---
 
