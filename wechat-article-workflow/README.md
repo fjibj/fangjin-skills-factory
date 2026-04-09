@@ -2,6 +2,24 @@
 
 微信公众号文章创作 Skill for Claude Code
 
+## 依赖说明
+
+**本 Skill 是独立完整的，不需要额外安装其他 Skill。**
+
+wechat-article-workflow 已经整合了以下旧版本 Skill 的功能：
+- ✅ **文章生成** - 原 wechat-article-generate（已整合）
+- ✅ **文章导出** - 原 wechat-article-export（已整合）
+- ✅ **MaydayV 风格** - 原 wechat-article-maydayv（已整合到风格学习）
+
+**系统要求：**
+- Node.js 20+
+- bun
+- Python 3.8+
+- PIL (Pillow)
+- requests
+
+---
+
 ## 快速开始
 
 ### 安装
@@ -109,18 +127,6 @@ bun run scripts/publish-draft.ts --article output/article.html --cover output/co
 - `orange` - 活力橙
 - `rose` - 故事玫红
 - `gray` - 专业灰
-
----
-
-## 依赖
-
-- Node.js 20+
-- bun
-- Python 3.8+
-- PIL (Pillow)
-- requests
-
----
 
 ## 隐私说明
 

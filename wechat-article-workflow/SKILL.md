@@ -4,6 +4,17 @@
 
 ---
 
+## 依赖说明
+
+**wechat-article-workflow 是独立完整的 Skill，不需要额外安装其他 Skill。**
+
+这个 Skill 已经整合了以下功能，无需再安装旧版本的独立 Skill：
+- ❌ wechat-article-maydayv（已整合）
+- ❌ wechat-article-export（已整合）
+- ❌ wechat-article-generate（已整合）
+
+---
+
 ## 功能特性
 
 - ✅ 多智能体协作文章生成（6 个智能体工作流）
