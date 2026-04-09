@@ -60,4 +60,35 @@ bun run scripts/generate.ts "AI技术趋势"
 
 ---
 
+### 3. tech-analysis-workflow
+
+技术选型分析全流程 Skill - 从候选技术检索到知识库上传的完整工作流。
+
+**功能特性：**
+- ✅ 候选技术自动识别与检索
+- ✅ 多维度分析对比（性能/易用性/生态/维护/成本）
+- ✅ 自动生成架构图（Python matplotlib）
+- ✅ Markdown 转 DOCX 专业报告
+- ✅ 一键上传到 IMA 知识库
+
+**6 智能体工作流：**
+1. 候选技术识别员 - 识别候选技术
+2. 信息检索员 - WebFetch/WebSearch 收集信息
+3. 多维度分析师 - 分析对比各维度
+4. 架构师 - 生成架构图、流程图
+5. 文档工程师 - 生成 Word 报告
+6. 知识库管理员 - 上传到 IMA 知识库
+
+**快速开始：**
+```bash
+cd tech-analysis-workflow
+bun run scripts/analyze.ts "技术选型主题" \
+  --candidates "技术A,技术B,技术C" \
+  --dimensions "performance,usability,ecosystem"
+```
+
+**详细文档：** [SKILL.md](tech-analysis-workflow/SKILL.md)
+
+---
+
 更多 skills 持续添加中...
