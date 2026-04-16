@@ -220,4 +220,44 @@ ls -la && cat README.md | head -50
 
 ---
 
+### 8. github-fix
+
+GitHub 问题修复 Skill - 诊断和修复 CI、测试、构建问题。
+
+**功能特性：**
+- ✅ CI 失败诊断
+- ✅ 测试失败修复
+- ✅ 构建错误修复
+- ✅ Lint 错误修复
+- ✅ Workflow 配置修复
+- ✅ 4阶段修复流程（Diagnose → Fix → Verify → Document）
+
+**支持问题类型：**
+- CI/CD 失败
+- 测试失败
+- 构建错误
+- 依赖问题
+- Workflow 配置错误
+- 超时问题
+
+**快速开始：**
+```bash
+# 诊断 CI 失败
+gh run list --status failure --limit 1
+gh run view <run-id> --log
+
+# 本地复现和修复
+npm test
+# 修复代码...
+npm test  # 验证
+
+# 提交修复
+git commit -m "fix: [修复描述]"
+git push
+```
+
+**详细文档：** [SKILL.md](github-fix/SKILL.md)
+
+---
+
 更多 skills 持续添加中...
