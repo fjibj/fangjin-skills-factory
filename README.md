@@ -290,4 +290,38 @@ Claude 记忆系统配置 Skill - 管理和配置 Claude Code 的持久化记忆
 
 ---
 
+### 10. windows-service-opt
+
+Windows 服务管理优化 Skill - 系统服务管理和启动优化。
+
+**功能特性：**
+- ✅ 查看所有服务状态
+- ✅ 检查服务依赖关系
+- ✅ 配置启动类型（Auto/Manual/Disabled）
+- ✅ 安全的服务禁用建议
+- ✅ 批量优化脚本
+- ✅ 服务故障排除
+
+**支持场景：**
+- Windows 启动优化
+- 系统性能调优
+- 服务故障排除
+- 禁用不必要服务
+
+**快速开始：**
+```powershell
+# 列出所有服务
+Get-Service | Select-Object Name, Status, StartType
+
+# 禁用服务（以 SysMain 为例）
+Set-Service -Name "SysMain" -StartupType Disabled
+Stop-Service -Name "SysMain" -Force
+```
+
+**详细文档：** [SKILL.md](windows-service-opt/SKILL.md)
+
+---
+
+## 技能总数：10 个
+
 更多 skills 持续添加中...
