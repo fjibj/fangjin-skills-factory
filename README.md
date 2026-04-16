@@ -186,4 +186,38 @@ bun run auto-process.ts
 
 ---
 
+### 7. github-research
+
+GitHub 仓库研究分析 Skill - 系统化分析开源项目。
+
+**功能特性：**
+- ✅ 克隆或访问仓库
+- ✅ 代码结构探索
+- ✅ 依赖关系分析
+- ✅ 代码模式搜索
+- ✅ 近期活动分析
+- ✅ 多深度分析（Quick/Standard/Deep）
+
+**分析维度：**
+- 项目概述和用途
+- 架构和模块划分
+- 核心依赖和技术栈
+- 代码质量和测试
+- 维护状态和社区活跃度
+
+**快速开始：**
+```bash
+# 快速分析
+git clone <repo_url> /tmp/repo-analysis/<name>
+cd /tmp/repo-analysis/<name>
+ls -la && cat README.md | head -50
+
+# 深度分析
+# 按 SKILL.md 8步流程执行
+```
+
+**详细文档：** [SKILL.md](github-research/SKILL.md)
+
+---
+
 更多 skills 持续添加中...
