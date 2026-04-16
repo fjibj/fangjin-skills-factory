@@ -91,4 +91,38 @@ bun run scripts/analyze.ts "技术选型主题" \
 
 ---
 
+### 4. ima-upload
+
+IMA 知识库文件上传 Skill - 完整的文件上传工作流，支持多种文件类型。
+
+**功能特性：**
+- ✅ 文件预检验证（类型、大小检查）
+- ✅ 重复文件名检测
+- ✅ 自动获取 COS 临时凭证
+- ✅ 分块上传到腾讯云 COS
+- ✅ 自动添加到知识库
+- ✅ 上传结果验证
+
+**支持的文件类型：**
+- PDF (.pdf)
+- Word (.doc/.docx)
+- PowerPoint (.ppt/.pptx)
+- Excel (.xls/.xlsx/.csv)
+- Markdown (.md)
+- 图片 (.png/.jpg/.jpeg/.webp)
+- 文本 (.txt)
+- 音频 (.mp3/.m4a/.wav/.aac)
+
+**快速开始：**
+```bash
+# 使用 hermes-skill 调用
+/hermes-skill ima-upload
+# 或直接使用 skill
+/ima-upload
+```
+
+**详细文档：** [SKILL.md](ima-upload/SKILL.md)
+
+---
+
 更多 skills 持续添加中...
