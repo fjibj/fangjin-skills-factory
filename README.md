@@ -260,4 +260,34 @@ git push
 
 ---
 
+### 9. claude-mem-config
+
+Claude 记忆系统配置 Skill - 管理和配置 Claude Code 的持久化记忆。
+
+**功能特性：**
+- ✅ 4 种记忆类型管理（User/Feedback/Project/Reference）
+- ✅ 记忆文件创建规范
+- ✅ MEMORY.md 索引维护
+- ✅ 记忆更新和过期处理
+- ✅ 记忆分类和检索
+
+**记忆类型：**
+- **User**: 用户角色、背景、偏好
+- **Feedback**: 工作方式指导（做/不做）
+- **Project**: 进行中的工作、决策、限制
+- **Reference**: 外部系统指针
+
+**快速开始：**
+```bash
+# 创建记忆文件
+# ~/.claude/memory/{type}/{name}.md
+
+# 更新索引
+# ~/.claude/memory/MEMORY.md
+```
+
+**详细文档：** [SKILL.md](claude-mem-config/SKILL.md)
+
+---
+
 更多 skills 持续添加中...
