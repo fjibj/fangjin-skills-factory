@@ -154,4 +154,36 @@ Get-Package | Where-Object {$_.Name -like "*Software*"} | Uninstall-Package -For
 
 ---
 
+### 6. harness-workflow
+
+微信消息 Harness 流程处理 Skill - Plan → Work → Review → Reply 四阶段工作流。
+
+**功能特性：**
+- ✅ Phase 1: Plan（创建计划）
+- ✅ Phase 2: Work（执行计划）
+- ✅ Phase 3: Review（审查结果）
+- ✅ Phase 4: Reply（发送回复）
+- ✅ 每阶段结果实时返回微信
+- ✅ 自动进度报告
+- ✅ 消息处理记忆记录
+
+**适用场景：**
+- 微信消息自动化处理
+- 多步骤任务执行
+- 需要用户可见进度的任务
+
+**快速开始：**
+```bash
+# 检测新消息
+cd ~/.claude/plugins/cache/cc-weixin/weixin/0.1.0
+bun run auto-process.ts
+
+# 按 Harness 流程处理
+# Phase 1: Plan → Phase 2: Work → Phase 3: Review → Phase 4: Reply
+```
+
+**详细文档：** [SKILL.md](harness-workflow/SKILL.md)
+
+---
+
 更多 skills 持续添加中...
