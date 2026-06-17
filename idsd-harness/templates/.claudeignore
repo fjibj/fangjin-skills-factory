@@ -1,0 +1,12 @@
+# .claudeignore — 阻止 AI 读取 Holdout Set 场景文件
+# ====================================================
+# 被 .claudeignore 列出的文件，Claude Code 在构建时物理上不可见。
+# 这确保了 IDSD 的 Holdout Set 机制——构建代理看不到评估标准，防止"应试"。
+#
+# 注意：评估时你手动运行 evaluate.py，这不受 .claudeignore 限制。
+
+# 屏蔽场景文件（构建时 AI 不可见）
+holdout/scenarios/
+
+# 可选：屏蔽工具和模板文件（如果不需要 AI 看到）
+# templates/

@@ -1,0 +1,102 @@
+# ============================================================================
+# IDSD Workflow Status — 流程状态仪表盘
+# 作用：跟踪当前 ICE 流程的进度，Agent 自动更新，用户随时查看
+# 位置：项目根目录 /idsd/idsd-status.yaml
+# 查看：cat idsd/idsd-status.yaml
+# ============================================================================
+
+workflow:
+  type: planned-build            # fast-build | planned-build | strategic-build | evaluate
+  slice: ""                      # 当前功能切片名称
+  status: not_started            # not_started | in_progress | completed | failed
+  started_at: ""                 # ISO 8601
+  completed_at: ""               # ISO 8601
+
+steps:
+  - id: 1
+    name: 编写 Intent
+    description: 定义 Goal（目标）、Constraints（约束）、Failure Conditions（失败条件）
+    status: pending              # pending | in_progress | completed | failed | skipped
+    started_at: ""
+    completed_at: ""
+    artifacts: []                # 本步骤产出的文件路径列表
+
+  - id: 2
+    name: 编写 Expectations
+    description: 定义成功场景、失败场景、边界场景（用户语言，非技术语言）
+    status: pending
+    started_at: ""
+    completed_at: ""
+    artifacts: []
+
+  - id: 3
+    name: 组装 Context
+    description: 自动读取 CLAUDE.md / AGENTS.md / PROJECT_PROFILE.md / 代码库结构，生成上下文包
+    status: pending
+    started_at: ""
+    completed_at: ""
+    artifacts:
+      - idsd/context/context-bundle.md
+
+  - id: 4
+    name: 规划实现路径
+    description: 拆分为功能切片，生成 feature_list.json
+    status: pending
+    started_at: ""
+    completed_at: ""
+    artifacts:
+      - idsd/plans/feature-list.json
+
+  - id: 5
+    name: 逐切片构建
+    description: 按切片顺序构建，每个切片完成后运行测试
+    status: pending
+    started_at: ""
+    completed_at: ""
+    artifacts: []
+    sub_steps:                   # 动态更新，根据实际切片数量增减
+      - name: ""
+        status: pending          # pending | in_progress | completed | failed
+
+  - id: 6
+    name: 运行 Holdout 评估
+    description: 使用 holdout/evaluate.py 运行场景评估（构建代理看不到场景文件）
+    status: pending
+    started_at: ""
+    completed_at: ""
+    artifacts:
+      - holdout/results/<version>.json
+
+  - id: 7
+    name: 记录检查点
+    description: 更新 checkpoint.md，记录已通过的 Expectations 和当前状态
+    status: pending
+    started_at: ""
+    completed_at: ""
+    artifacts:
+      - idsd/checkpoints/checkpoint-<timestamp>.md
+
+  - id: 8
+    name: 用户验收
+    description: 人工确认交付物是否满足意图
+    status: pending
+    started_at: ""
+    completed_at: ""
+    artifacts: []
+
+summary:
+  total_steps: 8
+  completed: 0
+  in_progress: 0
+  pending: 8
+  failed: 0
+
+# --- 状态更新规则（Agent 遵守）---
+# 1. 开始一个步骤时：status → in_progress, started_at → now
+# 2. 完成一个步骤后：status → completed, completed_at → now，更新 artifacts
+# 3. 步骤失败时：status → failed，在下方的 errors 中记录原因
+# 4. 每次更新后同时更新 summary 统计
+# 5. 用户随时可以查看状态：cat idsd/idsd-status.yaml
+
+errors: []
+notes: ""

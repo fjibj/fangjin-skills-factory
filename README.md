@@ -322,6 +322,52 @@ Stop-Service -Name "SysMain" -Force
 
 ---
 
-## 技能总数：10 个
+### 11. idsd-harness
+
+Intent-Driven Software Development（意图驱动软件开发）完整工具链 — IDSD 端到端开发 Harness，包含 ICE 流程、状态跟踪、Holdout Set 评估。
+
+**功能特性：**
+- ✅ 完整 ICE 流程（Intent → Context → 构建 → 评估 → 检查点 → 验收）
+- ✅ 4 种 Claude Code Skill（Planned / Fast / Strategic / Evaluate）
+- ✅ 状态跟踪仪表盘（`idsd-status.yaml`，类似 BMAD + TEA 的 `bmm-workflow-status.yaml`）
+- ✅ Holdout Set 评估体系（`.claudeignore` 屏蔽场景文件防"应试"）
+- ✅ 端到端流程，减少交互，方便跟踪
+- ✅ 3 种速度管道（Fast / Planned / Strategic）
+
+**ICE 流程：**
+1. 编写 Intent（Goal + Constraints + Failure Conditions）
+2. 编写 Expectations（成功/失败/边界场景）
+3. 自动组装 Context（CLAUDE.md + AGENTS.md + PROJECT_PROFILE.md）
+4. 规划功能切片
+5. 逐切片构建（Agent 自主构建，循环验证）
+6. Holdout Set 评估（场景评估，代理提前看不到）
+7. 记录检查点（Checkpoint）
+8. 用户验收
+
+**快速开始：**
+```bash
+# 复制文件到项目根目录
+cp -r idsd-harness/templates/* my-project/
+cp -r idsd-harness/holdout/ my-project/
+cp -r idsd-harness/idsd/ my-project/
+mkdir -p my-project/.claude/skills/
+cp idsd-harness/skills/*.md my-project/.claude/skills/
+
+# 编辑项目配置（改技术栈、规则、画像）
+vim my-project/CLAUDE.md
+vim my-project/AGENTS.md
+vim my-project/PROJECT_PROFILE.md
+
+# 启动 IDSD 流程
+cd my-project
+claude-code
+/start-planned-feature "域层数据模型"
+```
+
+**详细文档：** [idsd-harness/README.md](idsd-harness/README.md)
+
+---
+
+## 技能总数：11 个
 
 更多 skills 持续添加中...

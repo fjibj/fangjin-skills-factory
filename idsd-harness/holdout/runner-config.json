@@ -1,0 +1,8 @@
+{
+  "project_root": ".",
+  "scenarios_dir": "holdout/scenarios",
+  "results_dir": "holdout/results",
+  "test_command": "go test ./...",
+  "build_command": "go build ./...",
+  "description": "根据你的项目技术栈修改 test_command 和 build_command"
+}
