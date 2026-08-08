@@ -1,14 +1,16 @@
+---
+{
+  "checks": [
+    { "name": "群 B 声明能力", "method": "POST", "url": "/api/domains/{{domainId}}/capabilities", "body": { "group_id": "group-b", "capabilities": ["data-analysis"] }, "expect": { "status": 200 } },
+    { "name": "按能力发现返回群 B", "method": "GET", "url": "/api/domains/{{domainId}}/discover?capabilities=data-analysis&group_id=group-a", "expect": { "status": 200, "json": { "$any": { "group_id": "group-b", "reputation": 0, "flagged": false } } } },
+    { "name": "成员能力列表含声明", "method": "GET", "url": "/api/domains/{{domainId}}/capabilities", "expect": { "status": 200, "json": { "$any": { "group_id": "group-b", "capabilities": { "$any": { "$eq": "data-analysis" } } } } } }
+  ]
+}
+---
 # 成功场景：跨群能力发现
 
-**场景**：群 A 需要一项数据分析能力，向域发起能力发现请求。
+**场景**：群 B 声明"数据分析"能力后，群 A 按能力搜索。
 
-**期望行为**：
-1. 域返回匹配的能力列表，按信誉评分从高到低排序
-2. 返回结果包含能力名称、所属群、信誉评分，但不暴露群的内部细节
-3. 群 A 的查询意图不会被广播给其他群
-4. 响应时间不超过 500ms
+**期望行为**：发现结果按信誉排序，返回群 B 及其信誉分、flagged 标记。
 
-**验证方式**：
-- 调用能力发现 API，验证返回结果格式和排序
-- 验证响应时间
-- 验证结果中不包含群的内部通信地址等敏感信息
+> 注意 `$contains` 只支持字符串，数组字段要用 `$any: { "$eq": ... }`（实战踩坑）。

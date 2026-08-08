@@ -1,14 +1,17 @@
+---
+{
+  "checks": [
+    { "name": "创建域", "method": "POST", "url": "/api/domains", "body": { "name": "demo", "owner_group_id": "group-a" }, "expect": { "status": 201 }, "capture": { "domainId": "id" } },
+    { "name": "域出现在列表", "method": "GET", "url": "/api/domains?group_id=group-a", "expect": { "status": 200, "json": { "$any": { "id": "{{domainId}}" } } } },
+    { "name": "生成邀请码", "method": "POST", "url": "/api/domains/{{domainId}}/invite", "body": {}, "expect": { "status": 200 }, "capture": { "inviteCode": "invite_code" } },
+    { "name": "新群加入", "method": "POST", "url": "/api/domains/join", "body": { "invite_code": "{{inviteCode}}", "group_id": "group-b" }, "expect": { "status": 200 } },
+    { "name": "域详情含新成员", "method": "GET", "url": "/api/domains/{{domainId}}", "expect": { "status": 200, "json": { "members": { "$any": { "group_id": "group-b" } } } } }
+  ]
+}
+---
 # 成功场景：新群申请加入域
 
-**场景**：一个新的群组向域发送加入请求，提交自身的能力声明。
+**场景**：群 A 创建域并生成邀请码，群 B 凭邀请码加入。
 
-**期望行为**：
-1. 域在收到请求后 10 秒内完成注册
-2. 该群的能力声明被正确解析和存储
-3. 注册完成后，群的能力对其他群可见
-4. 域向群返回注册成功的确认消息（含域的元信息）
-
-**验证方式**：
-- 调用注册 API，验证响应时间 < 10 秒
-- 查询域的能力目录，确认新群的能力已列出
-- 从另一个群发起能力发现请求，确认能搜索到新群的能力
+**期望行为**：注册成功、邀请码可用、域详情反映成员变化。
+（front-matter 的 checks 为机器可执行断言；正文是给人读的场景描述。）
