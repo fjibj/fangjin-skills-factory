@@ -337,6 +337,7 @@ summary:
 
 4. **完成子切片**：
    - 更新状态文件对应 sub_step → completed
+   - 更新 `idsd/dependencies.json`：写清本切片 `provides`（如 schema 版本）与 `depends_on`（依赖的上游切片及版本）
    - 输出：`✅ 切片 [N/N]: {切片名} — 完成（+X 文件，+Y 行代码）`
 
 5. **所有子切片完成后**：
@@ -352,6 +353,7 @@ summary:
 **执行流程**：
 
 1. **运行评估**（Node/Fastify 项目）：
+   评估前先跑 `npx tsx idsd/check-deps.ts`，确认当前切片是 `ready`（若 `stale`/`blocked`，先处理上游版本变化再评估）。
    ```bash
    npx tsx holdout/evaluate.ts {slice-name}-v1
    ```

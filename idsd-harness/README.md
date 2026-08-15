@@ -14,6 +14,14 @@ v2 把实战验证过的机制注入工具链（实战出处：agent-chat-box �
 
 `evaluate.py` 保留为手动/轻量模式（非 Node 项目起步用），两套判卷机选一。
 
+## v3 新增：切片依赖追踪
+
+上游切片升版本，自动标出下游要重审的切片（把 Cordis 的 reactive coeffect 最小化到 IDSD）：
+
+- **`idsd/dependencies.json`** — 每个切片声明 `depends_on`（建在上游哪个锚点版本之上）+ `provides`（对外提供哪个版本）
+- **`idsd/check-deps.ts`** — 比对清单，输出三态：`ready` / `stale`（上游升级了要重审）/ `blocked`（上游没建好）
+- **v1 边界**：只追踪 `schema` 版本，只标「要重审」不自动重跑评估；多层传播靠「处理完一层再跑一次」
+
 ---
 
 ## 快速安装（5 分钟）
@@ -95,7 +103,9 @@ your-project/
 │   │   └── boundary/           #   边界场景示例
 │   └── results/                #   评估结果（自动生成）
 └── idsd/
-    └── idsd-status.yaml        # ⭐ 流程状态仪表盘
+    ├── idsd-status.yaml        # ⭐ 流程状态仪表盘
+    ├── dependencies.json       #   切片依赖清单（depends_on / provides）
+    └── check-deps.ts           #   依赖检查器（标 stale/blocked）
 ```
 
 ---
@@ -181,6 +191,17 @@ npx tsx holdout/evaluate.ts domain-v2
 
 > 非 Node/Fastify 项目：`python holdout/evaluate.py domain-v2`（手动模式，需自行接入断言）。
 
+### 场景五：切片依赖检查（上游变了标下游）
+
+每个切片闭环时，更新 `idsd/dependencies.json`（声明本切片 `provides` 的 schema 版本、以及 `depends_on` 的上游切片与版本）。想确认哪些下游要重审，跑：
+
+```bash
+npx tsx idsd/check-deps.ts
+```
+
+输出三态：`ready`（就绪）/ `stale`（上游升级了，本切片要重审）/ `blocked`（上游没建好）。
+退出码 0 = 全部就绪，1 = 有 stale/blocked。多层传播靠「处理完一层再跑一次」自然逐层推进。
+
 ---
 
 ## 三种管道速查
@@ -201,6 +222,9 @@ A: **构建时看不到**。`holdout/scenarios/` 被 `.claudeignore` 屏蔽，Cl
 
 ### Q: 状态文件怎么用？
 A: Agent 自动维护 `idsd/idsd-status.yaml`，你随时可以 `cat idsd/idsd-status.yaml` 查看当前进度。不需要手动编辑。
+
+### Q: 切片依赖怎么追踪？
+A: 用 `idsd/check-deps.ts`。每个切片在 `idsd/dependencies.json` 里声明「建在上游哪个版本之上」（`depends_on`）和「对外提供哪个版本」（`provides`）。上游切片升了 schema，跑 `npx tsx idsd/check-deps.ts` 会把下游标成 `stale`（要重审）或 `blocked`（上游没建好）。v1 只追踪 schema 版本，多层传播靠「处理完一层再跑一次」。锚点就是 `depends_on` 里除 `slice` 外的任意 key——以后想追踪 API 契约，加个 key 就行，不用改脚本逻辑。
 
 ### Q: 我想中途暂停，下次继续怎么办？
 A: 对于 planned-build：直接关掉会话，下次用相同的命令重新开始，Agent 会读取状态文件从中断处继续。对于 strategic-build：会话结束时 Agent 会自动生成 `idsd/handoff.md`，下次运行 `/resume {feature-name}` 恢复。
@@ -322,5 +346,7 @@ idsd-harness/
 │   │   └── boundary/                  #     边界场景示例
 │   └── results/                       #     评估结果目录
 └── idsd/                              # IDSD 运行时目录（→ 项目根目录）
-    └── idsd-status.yaml               #   流程状态仪表盘
+    ├── idsd-status.yaml               #   流程状态仪表盘
+    ├── dependencies.json              #   切片依赖清单（depends_on / provides）
+    └── check-deps.ts                  #   依赖检查器（标 stale/blocked）
 ```

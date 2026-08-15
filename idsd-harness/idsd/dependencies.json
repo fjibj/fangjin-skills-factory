@@ -1,0 +1,33 @@
+{
+  "_comment": "IDSD 切片依赖清单（示例 = agent-chat-box 域层 5 切片真实数据）。每个切片声明 provides（对外提供的锚点及版本）与 depends_on（建立在上游哪个锚点版本之上）。复制到你的项目后，清空 slices 按你的切片重填。v1 只追踪 schema 一个锚点，锚点就是 depends_on 里除 slice 外的任意 key。",
+  "slices": {
+    "slice1-domain-registration": {
+      "provides": { "schema": "v10" },
+      "depends_on": []
+    },
+    "slice2-discovery-reputation": {
+      "provides": { "schema": "v10" },
+      "depends_on": [
+        { "slice": "slice1-domain-registration", "schema": "v10" }
+      ]
+    },
+    "slice3-reputation-updates": {
+      "provides": { "schema": "v11" },
+      "depends_on": [
+        { "slice": "slice2-discovery-reputation", "schema": "v10" }
+      ]
+    },
+    "slice4-boundaries": {
+      "provides": { "schema": "v12" },
+      "depends_on": [
+        { "slice": "slice3-reputation-updates", "schema": "v11" }
+      ]
+    },
+    "slice5-domain-ui": {
+      "provides": { "schema": "v12" },
+      "depends_on": [
+        { "slice": "slice4-boundaries", "schema": "v12" }
+      ]
+    }
+  }
+}
