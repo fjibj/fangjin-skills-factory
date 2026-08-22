@@ -407,6 +407,41 @@ cp -r brain-first/.claude/skills/brain-first.md your-project/.claude/skills/
 
 ---
 
-## 技能总数：12 个
+### 13. demo-video-production
+
+产品功能演示视频(demo video / screencast)制作全流程 Skill - 从拆解功能清单、规划演示架构、
+(无产品时)制作静态演示页 demo、造真实感数据到浏览器自动化录屏、中文配音+字幕、鼠标操作合成、
+分段成片合并校验的完整工作流。纯技术、平台无关，兼容 Cola 与 Claude Code。
+
+**功能特性：**
+- ✅ 功能清单拆解 → 功能 × 展示方面 验收基准
+- ✅ 无产品时自动搭建静态演示页 demo（程序化数据 + 浏览器自动化驱动）
+- ✅ 已有产品则直接对真实界面录屏，跳过 demo
+- ✅ 中文配音(TTS 主时钟) + 字幕烧录 + 鼠标操作合成（坐标实测精准）
+- ✅ 分段成片 + 合并总片 + 总时长校验
+- ✅ 关键步骤默认人工确认，支持可选全自动运行
+- ✅ 含可复用模板：录屏 / 合成 / 坐标探测 / 分镜 / 过渡页 / 数据生成
+
+**核心流程：**
+1. 拆解需求 → 功能清单 / 每功能展示方面 / 交付硬约束
+2. 决策架构（决定是否做 demo）
+3. 造数据资产（六类仿真 + 免费素材 + 做旧）
+4. 底座验证（配音 / 帧→视频 / 字幕 / ffmpeg 合并）
+5. 逐功能制作（分镜 → demo/录屏 → 合成鼠标+字幕 → 成片）
+6. 合并总片 + 时长校验
+7. 关键帧素材整理
+
+**快速开始：**
+```bash
+# 在项目中安装 skill
+cp -r demo-video-production your-project/skills/
+# (Cola) 或放到 ~/.cola/skills/demo-video-production/
+```
+
+**详细文档：** [SKILL.md](demo-video-production/SKILL.md)
+
+---
+
+## 技能总数：13 个
 
 更多 skills 持续添加中...
