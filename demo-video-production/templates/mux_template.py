@@ -28,7 +28,8 @@ def build_plan_func():
 def make(mp4_out, func, plan, mouse_timeline=None, voice_wav="voice"):  # noqa
     # 1) 读 words.json 得到每句时长 -> 镜头总时长 = 配音总时长(主时钟)
     # 2) 逐镜头: 图片重复对应秒数 + 烧字幕(_draw_subtitle)
-    # 3) 若 mouse_timeline: 叠加合成鼠标(白箭头+点击脉冲), 坐标用浏览器 boundingBox 实测
+    # 3) 若 mouse_timeline: 叠加真人鼠标——点间滑行(加减速/悬停/微沉/末尾淡出)，
+    #    关键动作(key=True)才画强调光圈; 坐标用浏览器 boundingBox 实测
     # 4) 写 silent.mp4; 拼 voice.wav(镜头间加静音); ffmpeg 音画合并 -shortest
     pass
 
@@ -38,8 +39,12 @@ def _draw_subtitle(frame, text):
     # 合成到 frame 底部留白带(H-SUB_H:H); 不用背景条/不铺色块
     return frame
 
-def _draw_mouse(frame, x, y, click=False):
-    """叠加白箭头光标 + 橙圈点击脉冲; 封面/过渡页不要加鼠标"""
+def _draw_mouse(frame, x, y, pressed=False, key=False, alpha=1.0):
+    """真人鼠标(默认无特效): 箭头位置/alpha 由运动学时间线给定——滑行(smoothstep 加减速,
+    180~480ms 随距离)、到位悬停 170~260ms、按下仅 1~2px 微沉、结束停留 ~1s 后淡出。
+    仅 key=True 的关键点击画强调光圈(大圈渐隐 250~400ms); 封面/过渡页不加鼠标。"""
+    # 画布透明底 RGBA 层: 白箭头 + 1px 深描边(与系统默认观感一致, 无阴影);
+    # 按下 = 整体下移 1~2px(时长 100~130ms); 光圈 = 圆环随 alpha 渐隐, 不盖住目标文字
     return frame
 
 if __name__ == "__main__":
