@@ -48,12 +48,14 @@
 
 ### 配音(主时钟)
 - 从分镜抽旁白 → TTS 生成 `cn_NN.wav`，同时输出 `words.json`(含每句实测时长)。
+- **语音基本配置（默认）**：edge-tts `zh-CN-XiaoxiaoNeural`（晓晓，女声），语速 `rate=-4%`；
+  中文自然度明显优于 Windows 系统 TTS（Huihui），新项目默认采用；环境无 edge-tts 时回退系统 TTS。
 - 语速取自然(≈4.8字/s)，可微调；单段 60~90s 较紧凑耐看。
 
 ### 帧→视频(无声音轨)
 `make_mp4(frames_dir, out, fps, timeline)`：镜头表 `[{img, sec, text}]` = 每镜头指定
 图片重复 sec 秒 + 底部烧字幕。
-- 字幕：透明背景 + 深色字 + 细白描边，不遮挡画面。
+- 字幕：**无背景块；黑字(≈#080808) + 白描边(3px)**，画在画面**底部留白区**，不遮挡主要内容。
 - 中文路径：读 `np.fromfile+imdecode`，写 `cv2.imencode+np.tofile`。
 
 ### 音画合并

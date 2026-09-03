@@ -33,8 +33,9 @@ def make(mp4_out, func, plan, mouse_timeline=None, voice_wav="voice"):  # noqa
     pass
 
 def _draw_subtitle(frame, text):
-    """字幕: 透明背景 + 深色字(如 #28303e) + 白色细描边, 不遮挡画面"""
-    # cv2.putText + 描边(先画厚白底描边, 再叠深色字)
+    """字幕(基本配置): 无背景块 + 黑字(#080808) + 3px 白描边; 画在画面底部留白区, 不遮主要内容"""
+    # 画布透明底 RGBA 层 -> 黑字 fill=(8,8,8,255) + stroke_width=3 stroke_fill=(255,255,255)
+    # 合成到 frame 底部留白带(H-SUB_H:H); 不用背景条/不铺色块
     return frame
 
 def _draw_mouse(frame, x, y, click=False):
