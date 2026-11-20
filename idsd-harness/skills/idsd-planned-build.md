@@ -354,11 +354,26 @@ summary:
 
 1. **运行评估**（Node/Fastify 项目）：
    评估前先跑 `npx tsx idsd/check-deps.ts`，确认当前切片是 `ready`（若 `stale`/`blocked`，先处理上游版本变化再评估）。
+
    ```bash
-   npx tsx holdout/evaluate.ts {slice-name}-v1
+   # 首次跑这批场景/属性 → 先 observe（只记录不判死）
+   npx tsx holdout/evaluate.ts {slice-name}-v1 --observe
+
+   # 确认没有出题错误后 → 切 enforce 正式判分
+   npx tsx holdout/evaluate.ts {slice-name}-v2
    ```
-   自动完成：基线门禁 → 逐场景 HTTP 断言（每场景独立全新数据库）→ 结果存档。
-   非 Node 项目：用 `python holdout/evaluate.py {slice-name}-v1`（手动模式，需自行接入断言）。
+
+   自动完成：基线门禁 → 逐场景 HTTP 断言（每场景独立全新数据库）
+   → 属性测试（生成器 + 不变式 + shrink）→ 结果存档。
+
+   **三个判定原则（v3）**：
+   - **新考卷先 observe**：首轮失败只记 `WOULD_FAIL`、退出码 0。确认全是出题错误并修正后，再切 enforce。
+   - **属性失败 = 实现缺陷**（`judge_issue=false`）：结果里带最小反例与可复现 seed，原样附给构建代理。
+     `judge_issue=true` 说明失败在 `steps`（造数据），属出题问题。
+   - **日常回归用 `--affected`**：只跑 `git diff` 命中的不变式场景，未命中回退全量。
+
+   非 Node 项目：用 `python holdout/evaluate.py {slice-name}-v1`（手动模式，需自行接入断言；
+   **observe / property / affected 目前仅 TS 版支持**）。
 
 2. **读取结果**：`holdout/results/{slice-name}-v1.json`，汇总通过/失败/MANUAL。
 
@@ -403,6 +418,9 @@ summary:
    - Failure: N/N
    - Boundary: N/N
 
+   ## 验证戳
+   Verified-by: holdout {slice-name}-v2 | N/N, manual N | props N/N
+
    ## 构建产出
    - 新增文件：X 个
    - 修改文件：Y 个
@@ -412,7 +430,17 @@ summary:
    - （如果有未完成的切片）
    ```
 
-3. **更新状态文件**：Step 7 → completed
+3. **打验证戳（v3）**：
+
+   ```bash
+   npx tsx holdout/evaluate.ts {slice-name}-v2 --stamp
+   ```
+
+   通过后产出 `Verified-by: holdout {slice-name}-v2 | 39/39, manual 26/26 | props 2/2`。
+   **把这一行原样贴进 commit message 末行**；如果本次提交没跑验证，写 `Verified-by: none`。
+   同时把戳记入 `idsd/idsd-status.yaml` 的 `holdout.last_stamp`。
+
+4. **更新状态文件**：Step 7 → completed
 
 ---
 

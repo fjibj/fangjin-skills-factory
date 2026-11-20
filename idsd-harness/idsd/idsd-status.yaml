@@ -12,11 +12,19 @@ workflow:
   started_at: ""                 # ISO 8601
   completed_at: ""               # ISO 8601
 
+# ── Holdout 成熟度（v3）─────────────────────────────────────────────
+# 新场景/属性首轮走 observe（只记录不判死），确认无出题错误后切 enforce。
+holdout:
+  maturity: observe            # observe | enforce
+  observe_runs: 0              # observe 已跑轮数
+  last_stamp: ""               # 最近一次验证戳原文（Verified-by: ...）
+  waived: []                   # 被 waived 的缺陷：[{id, reason, date}]
+
 steps:
   - id: 1
     name: 编写 Intent
     description: 定义 Goal（目标）、Constraints（约束）、Failure Conditions（失败条件）
-    status: pending              # pending | in_progress | completed | failed | skipped
+    status: pending              # pending | in_progress | completed | failed | skipped | waived
     started_at: ""
     completed_at: ""
     artifacts: []                # 本步骤产出的文件路径列表

@@ -14,6 +14,26 @@ v2 把实战验证过的机制注入工具链（实战出处：agent-chat-box �
 
 `evaluate.py` 保留为手动/轻量模式（非 Node 项目起步用），两套判卷机选一。
 
+## v4 新增（2026-11）：验证闭环四件套
+
+对照 Claude Code 团队的验证实践，补齐「判据**维度**」与「判据**成本**」两个缺口：
+
+- **属性测试 `properties/`**：生成器造输入 + 不变式断言，补 E2E 场景抓不到的语义缺陷。
+  种子确定性（同版本重跑必得同一反例）+ 失败自动 shrink 出最小反例。
+  实战用途：切片 4「信誉跨域隔离」这类不变量违例，property 能在场景跑完前就抓到。
+- **observe 模式（`--observe`）**：新场景首轮只记 `WOULD_FAIL`、退出码恒 0、不阻断。
+  实战 12 轮里 8 次失败是出题问题——让出题错误先撞软墙，不冤枉实现。
+- **按 diff 触发（`--affected`）**：读 `idsd/invariants.json` 的 `trigger` 匹配 `git diff`，
+  只跑命中的场景/属性；未命中则**回退全量**（安全默认）。
+- **验证戳（`--stamp`）**：产出 `Verified-by: holdout slice4-v3 | 39/39, manual 26/26 | props 2/2`，
+  贴进 commit message 末行；没跑验证的提交写 `Verified-by: none`。
+
+> 参考工程实测（同一套考卷 + bug/fixed 双实现）：
+> bug 版在第 0 次迭代即被抓出并 shrink 到最小反例 `{"gname":"g-aaa","score":1}`；
+> 换 fixed 版后 25/25 全过；同版本重跑反例与 seed 完全一致。
+
+---
+
 ## v3 新增：切片依赖追踪
 
 上游切片升版本，自动标出下游要重审的切片（把 Cordis 的 reactive coeffect 最小化到 IDSD）：
@@ -96,6 +116,7 @@ your-project/
 ├── holdout/
 │   ├── evaluate.ts             # ⭐ 判卷机 v2（参考实现）：front-matter 断言自动判分（Node/Fastify）
 │   ├── evaluate.py             #   手动/轻量模式（非 Node 项目起步用）
+│   ├── properties/                    #   属性测试考卷（v3）
 │   ├── runner-config.json      # ⭐ 评估配置
 │   ├── scenarios/              # ⭐ 场景文件（被 .claudeignore 屏蔽）
 │   │   ├── success/            #   成功场景示例（可执行断言 + MANUAL 两种格式）

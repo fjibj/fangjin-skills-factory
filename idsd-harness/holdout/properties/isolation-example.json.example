@@ -1,0 +1,20 @@
+{
+  "id": "PROP-01",
+  "name": "reputation-cross-domain-isolation",
+  "invariant": "群在域 A 的评分不得改变它在域 B 的聚合信誉",
+  "runs": 25,
+  "shrink": true,
+  "variables": {
+    "gname": { "type": "string", "prefix": "g-", "len": [3, 5] },
+    "score": { "type": "int", "min": 1, "max": 9 }
+  },
+  "steps": [
+    { "name": "建域A", "method": "POST", "url": "/api/domains", "body": { "name": "dA" }, "expect": { "status": 201 }, "capture": { "dA": "id" } },
+    { "name": "建域B", "method": "POST", "url": "/api/domains", "body": { "name": "dB" }, "expect": { "status": 201 }, "capture": { "dB": "id" } },
+    { "name": "建群", "method": "POST", "url": "/api/groups", "body": { "name": "{{gname}}" }, "expect": { "status": 201 }, "capture": { "gid": "id" } },
+    { "name": "A域打分", "method": "POST", "url": "/api/scores", "body": { "domainId": "{{dA}}", "groupId": "{{gid}}", "score": "{{score}}" }, "expect": { "status": 201 } }
+  ],
+  "assert": [
+    { "name": "B域信誉必须为0", "method": "GET", "url": "/api/reputation/{{gid}}?domainId={{dB}}", "expect": { "status": 200, "json": { "score": 0 } } }
+  ]
+}
