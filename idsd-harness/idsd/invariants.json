@@ -1,0 +1,15 @@
+[
+  {
+    "id": "INV-01",
+    "desc": "信誉跨域隔离：域 A 的评分不得影响群在域 B 的聚合信誉",
+    "trigger": ["**/reputation*.ts", "**/schema/**"],
+    "scenarios": ["success/score-and-query"],
+    "property": "PROP-01"
+  },
+  {
+    "id": "INV-02",
+    "desc": "查询幂等：同一查询重复执行返回一致结果",
+    "trigger": ["**/api/**"],
+    "property": "PROP-02"
+  }
+]

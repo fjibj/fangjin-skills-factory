@@ -1,0 +1,19 @@
+{
+  "id": "PROP-02",
+  "name": "reputation-query-idempotent",
+  "invariant": "同一查询重复执行返回相同结果（查询幂等）",
+  "runs": 12,
+  "variables": {
+    "gname": { "type": "string", "prefix": "ig-", "len": [3, 5] },
+    "score": { "type": "int", "min": 1, "max": 5 }
+  },
+  "steps": [
+    { "name": "建域", "method": "POST", "url": "/api/domains", "body": { "name": "dI" }, "expect": { "status": 201 }, "capture": { "dI": "id" } },
+    { "name": "建群", "method": "POST", "url": "/api/groups", "body": { "name": "{{gname}}" }, "expect": { "status": 201 }, "capture": { "gid": "id" } },
+    { "name": "打分", "method": "POST", "url": "/api/scores", "body": { "domainId": "{{dI}}", "groupId": "{{gid}}", "score": "{{score}}" }, "expect": { "status": 201 } },
+    { "name": "首次查询", "method": "GET", "url": "/api/reputation/{{gid}}?domainId={{dI}}", "expect": { "status": 200 }, "capture": { "first": "score" } }
+  ],
+  "assert": [
+    { "name": "二次查询一致", "method": "GET", "url": "/api/reputation/{{gid}}?domainId={{dI}}", "expect": { "status": 200, "json": { "score": "{{first}}" } } }
+  ]
+}
